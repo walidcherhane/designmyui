@@ -30,7 +30,7 @@ const Layout: React.FC<{
   return (
     <>
       <NavBar />
-      <div className="mt-24">{children}</div>
+      <div className="my-24">{children}</div>
       <Footer />
     </>
   );
