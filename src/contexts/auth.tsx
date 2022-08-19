@@ -6,6 +6,7 @@ import { signOut, useSession } from "next-auth/react";
 interface AuthInterface {
   user: inferQueryOutput<"users.me">;
   isAuthenticated: boolean;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext({} as AuthInterface);
@@ -31,11 +32,12 @@ export const UnauthenticatedOnly = ({
 };
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
-  const { data: user } = trpc.useQuery(["users.me"]);
+  const { data: user, isLoading } = trpc.useQuery(["users.me"]);
   const session = useSession();
   return (
     <AuthContext.Provider
       value={{
+        isLoading,
         user: user && session.status === "authenticated" ? user : null,
         isAuthenticated: session.status === "authenticated" && user !== null,
       }}

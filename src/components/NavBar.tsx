@@ -11,7 +11,7 @@ import { AiOutlineUser, AiOutlineUserDelete } from "react-icons/ai";
 import ChangePasswordModal from "./modals/ChangePasswordModal";
 import DeleteAccount from "./modals/DeleteProfileModal";
 function NavBar() {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const [activeModelIndex, setActiveModelIndex] = React.useState<Number | null>(
     null
   );
@@ -49,7 +49,7 @@ function NavBar() {
           key: 2,
           label: (
             <button
-              className="inline-flex gap-2 items-center"
+              className="inline-flex items-center gap-2"
               onClick={() => signOut()}
             >
               <Space>
@@ -80,12 +80,12 @@ function NavBar() {
 
   return (
     <>
-      <div className="bg-white shadow-lg shadow-gray-100 text-gray-800  fixed top-0 z-50 p-3  w-full  ">
+      <div className="fixed top-0 z-50 w-full  bg-white p-3 text-gray-800 shadow-lg  shadow-gray-100  ">
         <div className="container mx-auto">
           <div className="flex items-center justify-between">
-            <div className="mr-auto p-2 font-bold text-xl">
+            <div className="mr-auto p-2 text-xl font-bold">
               <Link href={"/"}>
-                <a className="flex gap-4  justify-center items-center">
+                <a className="flex items-center  justify-center gap-4">
                   <Image src={"/logo.png"} width={40} height={40} alt="logo" />
                   <span className="font-default font-semibold">
                     Design my ui
@@ -93,11 +93,16 @@ function NavBar() {
                 </a>
               </Link>
             </div>
-            <div className="flex gap-4 sm:gap-8 text-sm ml-auto m-0 items-center justify-center mr-0 ">
-              {user ? (
+            <div className="m-0 ml-auto mr-0 flex items-center justify-center gap-4 text-sm sm:gap-8 ">
+              {isLoading ? (
+                <>
+                  <div className="h-2 w-20 rounded-full bg-gray-100 animate-pulse" />
+                  <div className="h-10 w-10 rounded-lg bg-gray-100 animate-pulse" />
+                </>
+              ) : user ? (
                 <>
                   <Link href="/posts/new">
-                    <a className="bg-transparent  text-gray-800 font-semibold hover:text-gray-600  py-2 px-4 border border-gray-400 hover:bg-gray-50 rounded-lg">
+                    <a className="rounded-lg  border border-gray-400 bg-transparent  py-2 px-4 font-semibold text-gray-800 hover:bg-gray-50 hover:text-gray-600">
                       New Post
                     </a>
                   </Link>
