@@ -39,7 +39,7 @@ function Profile() {
           currentUser && (
             <div className="container mx-auto">
               <div className="grid sm:gap-4 min-h-screen grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 m-0 sm:m-5 ">
-                <div className="profile flex  mx-8 sm:mx-2 md:mx-0  bg-white rounded-t-2xl  overflow-hidden sm:shadow-xl dark:bg-gray-900/20 items-start justify-start flex-col ">
+                <div className="profile flex  mx-8 sm:mx-2 md:mx-0  bg-white rounded-t-2xl  overflow-hidden sm:shadow-xl items-start justify-start flex-col ">
                   <div className="profile-head mb-16  h-32  w-full flex flex-cols   relative justify-center items-end ">
                     <Image
                       layout="fill"
@@ -63,7 +63,7 @@ function Profile() {
                     </div>
                   </div>
                   <div className="text-center w-full">
-                    <div className=" text-gray-800  dark:text-gray-300 font-bold text-xl">
+                    <div className=" text-gray-800  font-bold text-xl">
                       {user.name}
                     </div>
                     <Divider style={{ marginTop: 0 }}>{user.username}</Divider>

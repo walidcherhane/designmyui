@@ -80,7 +80,7 @@ function NavBar() {
 
   return (
     <>
-      <div className="bg-white shadow-lg shadow-gray-100 dark:shadow-black/20 dark:bg-[#2C3333] text-gray-800  fixed top-0 z-50 dark:text-gray-50 p-3  w-full  ">
+      <div className="bg-white shadow-lg shadow-gray-100 text-gray-800  fixed top-0 z-50 p-3  w-full  ">
         <div className="container mx-auto">
           <div className="flex items-center justify-between">
             <div className="mr-auto p-2 font-bold text-xl">

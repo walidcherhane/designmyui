@@ -85,8 +85,8 @@ const SignUp: NextPage = () => {
   );
 
   return (
-    <div className=" flex flex-col shadow-md px-4 sm:px-6 md:px-8 lg:px-10 mx-auto sm:w-9/12  max-w-md relative  py-8 bg-white dark:bg-zinc-800    border-8 border-indigo-600/40 ">
-      <h1 className="font-bold text-center text-3xl sm:text-3xl dark:text-white ">
+    <div className=" flex flex-col shadow-md px-4 sm:px-6 md:px-8 lg:px-10 mx-auto sm:w-9/12  max-w-md relative  py-8 bg-white    border-8 border-indigo-600/40 ">
+      <h1 className="font-bold text-center text-3xl sm:text-3xl ">
         Join us Now
       </h1>
       <p className="mx-10 mt-4 text-center text-sm sm:text-sm ">
@@ -110,7 +110,7 @@ const SignUp: NextPage = () => {
               </span>
               <input
                 type="text"
-                className="  text-sm  dark:text-white placeholder-gray-500 text-gray-900 bg-transparent pl-10  pr-4    border border-gray-400  w-full  py-2  focus:outline-none focus:border-blue-400"
+                className="  text-sm  placeholder-gray-500 text-gray-900 bg-transparent pl-10  pr-4    border border-gray-400  w-full  py-2  focus:outline-none focus:border-blue-400"
                 placeholder="How do you want to be called ?"
                 {...register("username", {
                   required: "Username is required",
@@ -128,7 +128,7 @@ const SignUp: NextPage = () => {
               </span>
               <input
                 type="email"
-                className="  text-sm  dark:text-white placeholder-gray-500 text-gray-900 bg-transparent pl-10  pr-4    border border-gray-400  w-full  py-2  focus:outline-none focus:border-blue-400"
+                className="  text-sm   placeholder-gray-500 text-gray-900 bg-transparent pl-10  pr-4    border border-gray-400  w-full  py-2  focus:outline-none focus:border-blue-400"
                 placeholder="Enter your email"
                 {...register("email", {
                   required: "Email Address is required",
@@ -149,7 +149,7 @@ const SignUp: NextPage = () => {
               </span>
               <input
                 id="password"
-                className="text-sm dark:text-white placeholder-gray-500 text-gray-900 bg-transparent pl-10 pr-4  border border-gray-400 w-full py-2 focus:outline-none"
+                className="text-sm placeholder-gray-500 text-gray-900 bg-transparent pl-10 pr-4  border border-gray-400 w-full py-2 focus:outline-none"
                 placeholder="Enter your password"
                 {...register("password", {
                   required: "Password is required",

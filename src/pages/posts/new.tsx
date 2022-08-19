@@ -68,14 +68,14 @@ function NewPost() {
     <Spin spinning={mutation.isLoading}>
       <div className="flex  min-h-screen flex-col justify-center py-6 font-default sm:py-0">
         <div className="relative py-3 sm:mx-auto sm:max-w-xl">
-          <div className="relative mx-8 rounded-3xl bg-white px-4 py-10 shadow dark:bg-gray-900 sm:p-10 md:mx-0">
+          <div className="relative mx-8 rounded-3xl bg-white px-4 py-10 shadow sm:p-10 md:mx-0">
             <div className="mx-auto max-w-md">
               <div className="flex items-center space-x-5">
-                <div className="flex h-14 w-14  flex-shrink-0 items-center  justify-center rounded-full bg-violet-50  from-[#8E2DE2] to-[#4A00E0] font-mono text-2xl text-gray-400  dark:bg-gradient-to-r dark:text-gray-50">
+                <div className="flex h-14 w-14  flex-shrink-0 items-center  justify-center rounded-full bg-violet-50  from-[#8E2DE2] to-[#4A00E0] font-mono text-2xl text-gray-400 ">
                   <HiOutlinePlus />
                 </div>
                 <div className="block self-start pl-2 text-xl font-semibold ">
-                  <h2 className="text-xl font-bold dark:text-neutral-100">
+                  <h2 className="text-xl font-bold">
                     Share your design!
                   </h2>
                   <p className=" text-sm font-normal leading-tight text-gray-500">

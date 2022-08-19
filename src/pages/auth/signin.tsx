@@ -89,7 +89,7 @@ const Home: NextPage = () => {
   );
 
   return (
-    <div className=" flex flex-col shadow-md sm:px-6 md:px-8 lg:px-10  w-50 max-w-md relative px-4 py-8 bg-white dark:bg-zinc-800 mx-auto  border-8 border-indigo-600/40 ">
+    <div className=" flex flex-col shadow-md sm:px-6 md:px-8 lg:px-10  w-50 max-w-md relative px-4 py-8 bg-white mx-auto  border-8 border-indigo-600/40 ">
       <div className="font-bold self-center text-3xl sm:text-3xl ">
         {" "}
         Welcome Back{" "}
@@ -116,7 +116,7 @@ const Home: NextPage = () => {
               </div>
               <input
                 type="text"
-                className=" bg-transparent text-sm dark:text-white placeholder-gray-500 text-gray-900  pl-10  pr-4    border border-gray-400  w-full  py-2  focus:outline-none focus:border-blue-400"
+                className=" bg-transparent text-sm  placeholder-gray-500 text-gray-900  pl-10  pr-4    border border-gray-400  w-full  py-2  focus:outline-none focus:border-blue-400"
                 placeholder="Email Adress"
                 {...register("email", {
                   required: "email is required",
@@ -134,7 +134,7 @@ const Home: NextPage = () => {
               </span>
               <input
                 type={"password"}
-                className=" bg-transparent text-sm dark:text-white placeholder-gray-500 text-gray-900 pl-10 pr-4  border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400 "
+                className=" bg-transparent text-sm  placeholder-gray-500 text-gray-900 pl-10 pr-4  border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400 "
                 placeholder="Enter your password"
                 {...register("password", {
                   required: "Password is required",

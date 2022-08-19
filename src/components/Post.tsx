@@ -110,7 +110,7 @@ function Post({ id }: { id: string }) {
 
       <motion.div
         layout
-        className={`group w-full font-default flex flex-col gap-4 p-2 bg-white border shadow-2xl shadow-gray-200  dark:shadow-gray-900/20 rounded-xl max-w-sm mx-auto relative   text-gray-800 `}
+        className={`group w-full font-default flex flex-col gap-4 p-2 bg-white border shadow-2xl shadow-gray-200   rounded-xl max-w-sm mx-auto relative   text-gray-800 `}
       >
         <div className="relative bg-white rounded-xl overflow-hidden">
           <div className="relative h-full  min-h-[219px] ">
@@ -211,7 +211,7 @@ function Post({ id }: { id: string }) {
         {post.isPrivate && (
           <div
             title="This post is visible only to you"
-            className="absolute top-4 right-2  bg-gray-50 text-gray-500  text-sm p-1 px-3 rounded-full  border-[1px] border-gray-500 dark:border-gray-900 "
+            className="absolute top-4 right-2  bg-gray-50 text-gray-500  text-sm p-1 px-3 rounded-full  border-[1px] border-gray-500 "
           >
             Private
           </div>

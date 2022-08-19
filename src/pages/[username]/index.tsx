@@ -107,7 +107,7 @@ function Profile() {
   return (
     <>
       <div className="grid min-h-screen sm:grid-cols-2 sm:gap-4 md:grid-cols-3  lg:grid-cols-4  ">
-        <div className="roundeds-xl relative  mx-8 flex  h-fit flex-col  items-start justify-start overflow-hidden    border-4  border-indigo-300 pb-10 dark:bg-gray-900/20 sm:mx-2 ">
+        <div className="roundeds-xl relative  mx-8 flex  h-fit flex-col  items-start justify-start overflow-hidden    border-4  border-indigo-300 pb-10 sm:mx-2 ">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/header-beams-2.png"
@@ -244,7 +244,7 @@ function Profile() {
               </div>
             )}
             <div className="mt-3 w-full font-default">
-              <div className="flex flex-col text-xl  font-bold capitalize text-gray-800 dark:text-gray-300">
+              <div className="flex flex-col text-xl  font-bold capitalize text-gray-800 ">
                 <Text
                   onSave={(name) => {
                     setEditedUser({
