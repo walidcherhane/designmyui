@@ -3,7 +3,7 @@ import * as trpc from "@trpc/server";
 import { hash } from "argon2";
 import { signUpSchema } from "../../schema/auth";
 import { z } from "zod";
-import imagekit from "../../lib/imageKit";
+import imagekit from "../../lib/imagekit";
 import bcrypt from "bcryptjs";
 
 export const exampleRouter = createRouter()
