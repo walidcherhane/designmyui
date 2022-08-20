@@ -138,7 +138,7 @@ function Post({ id }: { id: string }) {
                   title={post.title}
                   className="capitalize  text-xl  font-bold  truncate max-w-[75%]  "
                 >
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, qui.
+                  {post.title}
                 </h1>
 
               </div>
