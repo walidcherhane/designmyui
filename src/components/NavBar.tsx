@@ -1,4 +1,4 @@
-import { Avatar, Divider, Dropdown, Menu, Space } from "antd";
+import { Divider, Dropdown, Menu, Space } from "antd";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";

@@ -1,13 +1,12 @@
-// src/pages/_app.tsx
 import { withTRPC } from "@trpc/next";
 import type { AppRouter } from "../server/router";
 import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
-import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { AuthProvider } from "../contexts/auth";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
+import "../styles/globals.css"; 
 
 const MyApp: AppType = ({
   Component,

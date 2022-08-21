@@ -1,14 +1,9 @@
 import {
-  Avatar,
-  Button,
-  Divider,
   Empty,
-  Input,
   message,
   Spin,
   Tabs,
   Tooltip,
-  Typography,
   Upload,
 } from "antd";
 import Image from "next/image";
@@ -29,8 +24,6 @@ import { RcFile } from "antd/lib/upload";
 import Text from "../../components/Text";
 import linkifyHtml from "linkify-html";
 import { getBase64 } from "../../utils";
-
-const { Paragraph } = Typography;
 
 function Profile() {
   const utils = trpc.useContext();

@@ -94,10 +94,10 @@ const SignUp: NextPage = () => {
       </p>
       <Divider />
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-2 my-4">
+        <div className="flex flex-col gap-2 ">
           {mutation.isSuccess && (
             <p className="text-green-500 p-4 bg-gray-50 capitalize font-semibold text-center">
-              User created successfully. <Link href="/auth/signin">Login</Link>
+              Account created successfully. <Link href="/auth/signin">Login</Link>
             </p>
           )}
           <div className="flex flex-col w-full">

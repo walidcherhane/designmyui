@@ -1,13 +1,11 @@
-import { Button, Input, Radio, Spin } from "antd";
+import { Input } from "antd";
 import React from "react";
 import Post from "../components/Post";
 import { trpc } from "../utils/trpc";
 import { useDebounce } from "ahooks";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import ContentLoader from "react-content-loader";
 import { motion } from "framer-motion";
-import { Footer } from "antd/lib/layout/layout";
 const { Search } = Input;
 function Posts() {
   const router = useRouter();
