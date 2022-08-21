@@ -167,7 +167,7 @@ function Post({ id }: { id: string }) {
                   disabled={savePostMutation.isLoading}
                   onClick={() => handlePostSave()}
                 >
-                  {savedPostQuery.isLoading ? (
+                  {savePostMutation.isLoading ? (
                     <AiOutlineLoading3Quarters className="animate-spin" />
                   ) : isSaved ? (
                     <BsBookmarkFill />
