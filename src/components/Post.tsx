@@ -18,6 +18,7 @@ import { Avatar, message } from "antd";
 import PostItemModel from "./modals/PostItemModel";
 import ContentLoader from "react-content-loader";
 import { motion } from "framer-motion";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 function Post({ id }: { id: string }) {
   const { user } = useAuth();
@@ -110,15 +111,15 @@ function Post({ id }: { id: string }) {
 
       <motion.div
         layout
-        className={`group w-full font-default flex flex-col gap-4 p-2 bg-white border shadow-2xl shadow-gray-200   rounded-xl max-w-sm mx-auto relative   text-gray-800 `}
+        className={`group relative mx-auto flex w-full max-w-sm flex-col gap-4 rounded-xl border bg-white   p-2 font-default text-gray-800 shadow-2xl   shadow-gray-200 `}
       >
-        <div className="relative bg-white rounded-xl overflow-hidden">
+        <div className="relative overflow-hidden rounded-xl bg-white">
           <div className="relative h-full  min-h-[219px] ">
             <>
               <Image
                 quality={100}
                 src={post.image}
-                className=" z-0 group-hover:scale-125  bg-white  transition duration-500 object-cover object-center h-full w-full "
+                className=" z-0 h-full  w-full  bg-white object-cover object-center transition duration-500 group-hover:scale-125 "
                 alt={post.title}
                 priority={true}
                 layout="fill"
@@ -126,7 +127,7 @@ function Post({ id }: { id: string }) {
             </>
           </div>
 
-          <div className="absolute  flex z-10 bottom-0 inset-x-0 p-4  bg-gradient-to-t  from-white   via-white/80    text-gray-800">
+          <div className="absolute  inset-x-0 bottom-0 z-10 flex bg-gradient-to-t  from-white  via-white/80   p-4    text-gray-800">
             <div
               className="relative max-w-full"
               onClick={() => {
@@ -136,34 +137,38 @@ function Post({ id }: { id: string }) {
               <div className="w-full  cursor-pointer ">
                 <h1
                   title={post.title}
-                  className="capitalize  text-xl  font-bold  truncate max-w-[75%]  "
+                  className="max-w-[75%]  truncate  text-xl  font-bold capitalize  "
                 >
                   {post.title}
                 </h1>
-
               </div>
-              <div className="text-sm font-light truncate mr-4 flex w-full max-w-[75%] ">
-                  By{" "}
-                  <div className="truncate px-1 ">{post.author.name}</div> -{" "}
-                  {moment(post.createdAt).fromNow()}{" "}
-                </div>
+              <div className="mr-4 flex w-full max-w-[75%] truncate text-sm font-light ">
+                By <div className="truncate px-1 ">{post.author.name}</div> -{" "}
+                {moment(post.createdAt).fromNow()}{" "}
+              </div>
             </div>
             <div className=" absolute bottom-4 right-2 ">
-              <div className="flex gap-2 flex-grow ">
+              <div className="flex flex-grow gap-2 ">
                 <button
-                  className="bg-white border text-gray-400 disabled:cursor-not-allowed  text-base p-2 rounded-md  "
+                  className="rounded-md border bg-white p-2  text-base text-gray-400 disabled:cursor-not-allowed  "
                   disabled={likePostMutation.isLoading}
                   onClick={() => handlePostLike()}
                 >
-                  {isLiked ? <BsHeartFill /> : <BsHeart />}
+                  {likePostMutation.isLoading ? (
+                    <AiOutlineLoading3Quarters className="animate-spin" />
+                  ) : isLiked ? (
+                    <BsHeartFill />
+                  ) : (
+                    <BsHeart />
+                  )}
                 </button>
                 <button
-                  className="bg-white border text-gray-400 disabled:cursor-not-allowed  text-base p-2 rounded-md  "
+                  className="rounded-md border bg-white p-2  text-base text-gray-400 disabled:cursor-not-allowed  "
                   disabled={savePostMutation.isLoading}
                   onClick={() => handlePostSave()}
                 >
                   {savedPostQuery.isLoading ? (
-                    <BsChatDots />
+                    <AiOutlineLoading3Quarters className="animate-spin" />
                   ) : isSaved ? (
                     <BsBookmarkFill />
                   ) : (
@@ -174,9 +179,9 @@ function Post({ id }: { id: string }) {
             </div>
           </div>
         </div>
-        <div className=" relative text-start flex justify-start items-center gap-4">
+        <div className=" relative flex items-center justify-start gap-4 text-start">
           <Link href={`/${post.author.username}`}>
-            <div className=" flex gap-3  items-center w-full cursor-pointer">
+            <div className=" flex w-full  cursor-pointer items-center gap-3">
               <UserAvatar
                 src={post.author.Profile?.avatar}
                 size={40}
@@ -186,7 +191,7 @@ function Post({ id }: { id: string }) {
                 <div className="truncate">
                   <span className="truncate  ">{post.author.name}</span>
                   <br />
-                  <div className="text-sm text-gray-700   truncate">
+                  <div className="truncate text-sm   text-gray-700">
                     @{post.author.username}
                   </div>
                 </div>
@@ -194,8 +199,8 @@ function Post({ id }: { id: string }) {
             </div>
           </Link>
           {post.LikedPosts.length ? (
-            <div className="inline-flex  flex-shrink-0 gap-2 ml-auto items-center">
-              <span className="text-sm w-full">Liked by</span>
+            <div className="ml-auto  inline-flex flex-shrink-0 items-center gap-2">
+              <span className="w-full text-sm">Liked by</span>
               <Avatar.Group maxCount={2}>
                 {post.LikedPosts?.map((p) => (
                   <Avatar
@@ -211,7 +216,7 @@ function Post({ id }: { id: string }) {
         {post.isPrivate && (
           <div
             title="This post is visible only to you"
-            className="absolute top-4 right-2  bg-gray-50 text-gray-500  text-sm p-1 px-3 rounded-full  border-[1px] border-gray-500 "
+            className="absolute top-4 right-2  rounded-full border-[1px]  border-gray-500 bg-gray-50 p-1 px-3  text-sm text-gray-500 "
           >
             Private
           </div>
