@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { inferQueryOutput, trpc } from "../utils/trpc";
+import React from "react";
+import { trpc } from "../utils/trpc";
 import Link from "next/link";
 import Image from "next/image";
 import UserAvatar from "./UserAvatar";
@@ -7,9 +7,7 @@ import {
   BsBookmarkFill,
   BsBookmark,
   BsHeart,
-  BsHeartFill,
-  BsEye,
-  BsChatDots,
+  BsHeartFill
 } from "react-icons/bs";
 import AuthModel from "./modals/AuthModel";
 import { useAuth } from "../contexts/auth";
@@ -41,7 +39,6 @@ function Post({ id }: { id: string }) {
       ]);
     },
   });
-  const modelRef = useRef<HTMLDivElement>(null);
 
   const likedPostsQuery = trpc.useQuery(["posts.likedPosts"]);
   const savedPostQuery = trpc.useQuery(["posts.savedPosts"]);
