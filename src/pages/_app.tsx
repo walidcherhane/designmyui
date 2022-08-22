@@ -6,7 +6,8 @@ import { SessionProvider } from "next-auth/react";
 import { AuthProvider } from "../contexts/auth";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import "../styles/globals.css"; 
+import "../styles/globals.css";
+import { NextSeo } from "next-seo";
 
 const MyApp: AppType = ({
   Component,
@@ -28,6 +29,27 @@ const Layout: React.FC<{
 }> = ({ children }) => {
   return (
     <>
+      <NextSeo
+        title="The ultimate way to discover design inspiration"
+        description="Designmyui.com is a design inspiration resource that features the best User Interface designs across the web. It showcase beautiful, creative and well-made user interfaces from Dribbble, Behance, deviantArt, Pixpa..."
+        openGraph={{
+          url: "designmyui.software",
+          title: "The ultimate way to discover design inspiration",
+          description:
+            "Designmyui.com is a design inspiration resource that features the best User Interface designs across the web. It showcase beautiful, creative and well-made user interfaces from Dribbble, Behance, deviantArt, Pixpa...",
+          images: [
+            {
+              url: "https://ik.imagekit.io/buw7k7rvw40/twitter_card_120-05_WK4pi1BS-.png?ik-sdk-version=javascript-1.4.3&updatedAt=1661165595249",
+            },
+          ],
+          site_name: "Design My UI",
+        }}
+        twitter={{
+          handle: "@cherhane_walid",
+          site: "@designmyui",
+          cardType: "summary",
+        }}
+      />
       <NavBar />
       <div className="my-24">{children}</div>
       <Footer />

@@ -86,7 +86,7 @@ function NavBar() {
             <div className="mr-auto p-2 text-xl font-bold">
               <Link href={"/"}>
                 <a className="flex items-center  justify-center gap-4">
-                  <Image src={"/logo.png"} width={40} height={40} alt="logo" />
+                  <Image src={"/images/logo/transparent.png"} width={40} height={40} alt="logo" />
                   <span className="font-default font-semibold">
                     Design my ui
                   </span>
