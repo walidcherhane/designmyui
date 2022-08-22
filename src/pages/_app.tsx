@@ -8,6 +8,7 @@ import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import "../styles/globals.css";
 import { NextSeo } from "next-seo";
+import Head from "next/head";
 
 const MyApp: AppType = ({
   Component,
@@ -29,6 +30,9 @@ const Layout: React.FC<{
 }> = ({ children }) => {
   return (
     <>
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <NextSeo
         title="The ultimate way to discover design inspiration"
         description="Designmyui.com is a design inspiration resource that features the best User Interface designs across the web. It showcase beautiful, creative and well-made user interfaces from Dribbble, Behance, deviantArt, Pixpa..."
