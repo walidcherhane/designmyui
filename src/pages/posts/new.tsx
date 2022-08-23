@@ -23,11 +23,11 @@ const beforeUpload = (file: RcFile) => {
   if (!isJpgOrPng) {
     message.error("You can only upload JPG/PNG file!");
   }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
+  const isLt10M = file.size / 1024 / 1024 < 10;
+  if (!isLt10M) {
     message.error("Image must smaller than 2MB!");
   }
-  return isJpgOrPng && isLt2M;
+  return isJpgOrPng && isLt10M;
 };
 
 function NewPost() {
@@ -74,9 +74,7 @@ function NewPost() {
                   <HiOutlinePlus />
                 </div>
                 <div className="block self-start pl-2 text-xl font-semibold ">
-                  <h2 className="text-xl font-bold">
-                    Share your design!
-                  </h2>
+                  <h2 className="text-xl font-bold">Share your design!</h2>
                   <p className=" text-sm font-normal leading-tight text-gray-500">
                     Share your designs with anybody who is interested in using
                     them as inspiration or research material.
@@ -107,6 +105,7 @@ function NewPost() {
                       withCredentials={true}
                       multiple={false}
                       onChange={handleChange}
+                      beforeUpload={beforeUpload}
                     >
                       <p className="ant-upload-text">
                         Click or drag file to this area to upload

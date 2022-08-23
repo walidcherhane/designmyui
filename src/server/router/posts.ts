@@ -135,7 +135,6 @@ export const posts = createRouter()
     input: NewPostSchema,
     resolve: async ({ input, ctx }) => {
       try {
-        console.log(input.image.length);
         const { secure_url } = await cloudinary.uploader.upload(
           input.image as string,
           { folder: "posts_thumbnails" }
