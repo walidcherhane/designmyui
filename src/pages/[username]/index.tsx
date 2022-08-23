@@ -1,11 +1,4 @@
-import {
-  Empty,
-  message,
-  Spin,
-  Tabs,
-  Tooltip,
-  Upload,
-} from "antd";
+import { Empty, message, Spin, Tabs, Tooltip, Upload } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -289,7 +282,11 @@ function Profile() {
             <Tabs.TabPane tab={`${user.name?.split(" ")[0]}'s Posts `} key="1">
               <div className="grid grid-cols-1 gap-8 lg:grid-cols-2  ">
                 {user.Posts.length ? (
-                  user.Posts.map(({ id }) => <Post id={id} key={id} />)
+                  user.Posts.sort(
+                    (a, b) =>
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime()
+                  ).map(({ id }) => <Post id={id} key={id} />)
                 ) : (
                   <div className="col-span-full  flex items-center justify-center">
                     <Empty
@@ -308,7 +305,11 @@ function Profile() {
               key="2"
             >
               <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                {user.SavedPosts.length ? (
+                {user.SavedPosts.sort(
+                  (a, b) =>
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                ).length ? (
                   user.SavedPosts.map(({ postId }) => (
                     <Post id={postId} key={postId} />
                   ))

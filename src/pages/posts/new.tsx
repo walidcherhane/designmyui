@@ -55,9 +55,10 @@ function NewPost() {
       });
       router.push("/posts");
     } catch (error) {
-      if (error instanceof TRPCClientError) {
-        return message.error(error.message);
+      if (mutation.isError) {
+        return message.error(mutation.error.message);
       } else {
+        message.error("Something went wrong");
         console.log(error);
       }
     }
