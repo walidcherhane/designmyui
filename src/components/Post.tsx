@@ -50,10 +50,10 @@ function Post({ id }: { id: string }) {
   if (isLoading) {
     return (
       <ContentLoader
-        className="mx-auto"
-        viewBox="0 0 400 475"
-        height={475}
-        width={400}
+        className="mx-auto mt-4"
+        viewBox="0 0 300 270"
+        height={270}
+        width={300}
       >
         <rect x="0" y="0" rx="4" ry="4" width="300" height="200" />
         <rect x="60" y="220" rx="1" ry="1" width="240" height="10" />

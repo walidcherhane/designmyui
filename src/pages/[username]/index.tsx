@@ -277,10 +277,10 @@ function Profile() {
           </div>
         </div>
 
-        <div className=" col-span-full col-start-2 w-full px-8 ">
+        <div className=" col-span-full col-start-2 w-full px-8 sm:px-0 ">
           <Tabs defaultActiveKey="1">
             <Tabs.TabPane tab={`${user.name?.split(" ")[0]}'s Posts `} key="1">
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-2  ">
+              <div className="grid grid-cols-1 gap-8 md:gap-2 xl:grid-cols-3 md:grid-cols-2  ">
                 {user.Posts.length ? (
                   user.Posts.sort(
                     (a, b) =>
