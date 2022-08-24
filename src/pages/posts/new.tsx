@@ -85,14 +85,13 @@ function NewPost() {
                       {
                         required: true,
                         message: "Please upload an image",
-                      },
+                      }
                     ]}
                   >
                     <Upload.Dragger
                       maxCount={1}
                       listType="picture"
                       accept="image/*"
-                      withCredentials={true}
                       multiple={false}
                       onChange={handleChange}
                     >
