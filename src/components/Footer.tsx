@@ -1,21 +1,23 @@
+import { useScroll } from "ahooks";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useCallback, useEffect, useState } from "react";
 import { FaTwitter, FaGithub } from "react-icons/fa";
 function Footer() {
   const [isVisible, setIsVisible] = React.useState(true);
-  const [y, setY] = useState(document.scrollingElement?.scrollHeight);
+  const scroll = useScroll();
+  const [y, setY] = useState(scroll?.top);
   const handleNavigation = useCallback(() => {
-    if (y) {
-      if (y > window.scrollY) {
+    if (y && scroll?.top) {
+      if (y > scroll?.top) {
         // up
         setIsVisible(true);
-      } else if (y < window.scrollY) {
+      } else if (y < scroll?.top) {
         // down
         setIsVisible(false);
       }
     }
-    setY(window.scrollY);
-  }, [y]);
+    setY(scroll?.top);
+  }, [y, scroll?.top]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleNavigation);
