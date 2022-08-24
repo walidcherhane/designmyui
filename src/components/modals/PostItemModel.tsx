@@ -87,7 +87,7 @@ function PostItem({ post, onClose, isOpen }: Props) {
   const handlePostDelete = async () => {
     try {
       await DeletePostMutation.mutateAsync({ id: post.id });
-      router.push("/posts");
+      onClose();
     } catch (error) {
       console.error(error);
       if (DeletePostMutation.isError) {
@@ -127,14 +127,14 @@ function PostItem({ post, onClose, isOpen }: Props) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.1 }}
-            className="fixed flex items-center justify-center inset-0 z-[2000] bg-gray-900/40"
+            className="fixed inset-0 z-[2000] flex items-center justify-center bg-gray-900/40"
             onClick={() => setIsImageOpenModel(false)}
           >
             <Image
               quality={100}
               alt="post"
               src={post.image}
-              className="object-center object-cover"
+              className="object-cover object-center"
               width={700}
               height={500}
             />
@@ -171,7 +171,7 @@ function PostItem({ post, onClose, isOpen }: Props) {
               <div
                 onClick={() => setIsImageOpenModel(true)}
                 style={{ backgroundColor: postImageData.lightMuted }}
-                className={`relative flex 	cursor-pointer h-full  items-start justify-center lg:col-span-2`}
+                className={`relative flex 	h-full cursor-pointer  items-start justify-center lg:col-span-2`}
               >
                 <Image
                   quality={100}
