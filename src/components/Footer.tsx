@@ -1,43 +1,17 @@
-import { useScroll } from "ahooks";
-import { AnimatePresence, motion } from "framer-motion";
-import React, { useCallback, useEffect, useState } from "react";
-import { FaTwitter, FaGithub } from "react-icons/fa";
+import React, { useRef } from "react";
+import { FaGithub } from "react-icons/fa";
+import useHideOnScroll from "../Hooks/useHideOnScroll";
 function Footer() {
-  const [isVisible, setIsVisible] = React.useState(true);
-  const scroll = useScroll();
-  const [y, setY] = useState(scroll?.top);
-  const handleNavigation = useCallback(() => {
-    if (y && scroll?.top) {
-      if (y > scroll?.top) {
-        // up
-        setIsVisible(true);
-      } else if (y < scroll?.top) {
-        // down
-        setIsVisible(false);
-      }
-    }
-    setY(scroll?.top);
-  }, [y, scroll?.top]);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleNavigation);
-
-    return () => {
-      window.removeEventListener("scroll", handleNavigation);
-    };
-  }, [handleNavigation]);
+  const ref = useRef<HTMLDivElement>(null);
+  useHideOnScroll((diff) => {
+    ref.current!.style.transform = `translateY(${diff}px)`;
+  }, ref);
   return (
-    <AnimatePresence initial={false}>
-      {isVisible && (
-        <motion.div
-          initial={{ bottom: "-100%" }}
-          animate={{ bottom: 0 }}
-          exit={{ bottom: "-100%" }}
-          transition={{
-            duration: 0.5,
-            ease: "linear",
-          }}
-          className="fixed inset-x-0 bottom-0 z-50 border-t bg-white p-4 font-light   "
+    <>
+      {
+        <div
+          ref={ref}
+          className="fixed inset-x-0 bottom-0 z-50 border-t bg-white p-4 font-light transition   "
         >
           <div className="container mx-auto flex  w-full items-center justify-center gap-2 sm:justify-between">
             Design my ui - UI design inspirations
@@ -60,9 +34,9 @@ function Footer() {
               </a>
             </div>
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        </div>
+      }
+    </>
   );
 }
 
