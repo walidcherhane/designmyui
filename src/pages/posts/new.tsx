@@ -17,7 +17,9 @@ import { trpc } from "../../utils/trpc";
 
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
-
+import Dropzone from "../../components/Dropzone";
+import Image from "next/image";
+import { AiOutlineClose } from "react-icons/ai";
 
 function NewPost() {
   const router = useRouter();
@@ -79,30 +81,38 @@ function NewPost() {
                   onFinish={onFinish}
                   requiredMark={"optional"}
                 >
-                  <Form.Item
-                    name="image"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please upload an image",
-                      }
-                    ]}
-                  >
-                    <Upload.Dragger
-                      maxCount={1}
-                      listType="picture"
-                      accept="image/*"
-                      multiple={false}
-                      onChange={handleChange}
+                  {imageUrl ? (
+                    <div
+                      onClick={() => setImageUrl(undefined)}
+                      className="relative group overflow-hidden rounded-xl after:transition-all text-white cursor-pointer"
                     >
-                      <p className="ant-upload-text">
-                        Click or drag file to this area to upload
-                      </p>
-                      <p className="text-gray-400 ">
-                        Support for a single jpg, png or webp image file
-                      </p>
-                    </Upload.Dragger>
-                  </Form.Item>
+                      <AiOutlineClose className="absolute opacity-0 group-hover:opacity-100 transition-all left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 text-4xl" />
+                      <div className=" after:absolute after:inset-0 after:z-10 after:transition-all group-hover:after:bg-gray-800/40" />
+                      <Image
+                        width={500}
+                        height={300}
+                        className=" h-full w-full rounded-xl object-cover"
+                        src={imageUrl}
+                        alt=""
+                      />
+                    </div>
+                  ) : (
+                    <Form.Item
+                      name="image"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please upload an image",
+                        },
+                      ]}
+                    >
+                      <Dropzone
+                        onDrop={(file) => {
+                          setImageUrl(file);
+                        }}
+                      />
+                    </Form.Item>
+                  )}
                   <Form.Item
                     label="Title"
                     name="title"
