@@ -18,17 +18,6 @@ import { trpc } from "../../utils/trpc";
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 
-const beforeUpload = (file: RcFile) => {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-  const isLt10M = file.size / 1024 / 1024 < 10;
-  if (!isLt10M) {
-    message.error("Image must smaller than 2MB!");
-  }
-  return isJpgOrPng && isLt10M;
-};
 
 function NewPost() {
   const router = useRouter();
@@ -106,7 +95,6 @@ function NewPost() {
                       withCredentials={true}
                       multiple={false}
                       onChange={handleChange}
-                      beforeUpload={beforeUpload}
                     >
                       <p className="ant-upload-text">
                         Click or drag file to this area to upload
