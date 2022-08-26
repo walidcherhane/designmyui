@@ -1,22 +1,9 @@
-import { TRPCClientError } from "@trpc/client";
-import {
-  Select,
-  Input,
-  Spin,
-  Checkbox,
-  Form,
-  Button,
-  Upload,
-  message,
-} from "antd";
+import { Select, Input, Spin, Checkbox, Form, Button, message } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { HiOutlinePlus } from "react-icons/hi";
-import { getBase64 } from "../../utils";
 import { trpc } from "../../utils/trpc";
 
-import type { UploadChangeParam } from "antd/es/upload";
-import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import Dropzone from "../../components/Dropzone";
 import Image from "next/image";
 import { AiOutlineClose } from "react-icons/ai";
@@ -25,19 +12,6 @@ function NewPost() {
   const router = useRouter();
   const mutation = trpc.useMutation("posts.newPost");
   const [imageUrl, setImageUrl] = useState<string>();
-
-  const handleChange: UploadProps["onChange"] = (
-    info: UploadChangeParam<UploadFile>
-  ) => {
-    if (info.file.status === "uploading") {
-      return;
-    }
-    if (info.file.status === "done") {
-      getBase64(info.file.originFileObj as RcFile, (url) => {
-        setImageUrl(url);
-      });
-    }
-  };
   const onFinish = async (values: any) => {
     try {
       await mutation.mutateAsync({
@@ -76,17 +50,16 @@ function NewPost() {
               <div className="mt-4">
                 <Form
                   layout="vertical"
-                  name="form"
                   autoComplete="off"
                   onFinish={onFinish}
-                  requiredMark={"optional"}
+                  hideRequiredMark
                 >
                   {imageUrl ? (
                     <div
                       onClick={() => setImageUrl(undefined)}
-                      className="relative group overflow-hidden rounded-xl after:transition-all text-white cursor-pointer"
+                      className="group relative cursor-pointer overflow-hidden rounded-xl text-white after:transition-all"
                     >
-                      <AiOutlineClose className="absolute opacity-0 group-hover:opacity-100 transition-all left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 text-4xl" />
+                      <AiOutlineClose className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 text-4xl opacity-0 transition-all group-hover:opacity-100" />
                       <div className=" after:absolute after:inset-0 after:z-10 after:transition-all group-hover:after:bg-gray-800/40" />
                       <Image
                         width={500}
@@ -107,8 +80,8 @@ function NewPost() {
                       ]}
                     >
                       <Dropzone
-                        onDrop={(file) => {
-                          setImageUrl(file);
+                        onDrop={(url) => {
+                          setImageUrl(url);
                         }}
                       />
                     </Form.Item>

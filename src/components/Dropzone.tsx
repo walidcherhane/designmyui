@@ -1,6 +1,5 @@
 import { message } from "antd";
 import React from "react";
-import { getBase64 } from "../utils";
 
 type Props = {
   onDrop: (image: string) => void;
@@ -10,9 +9,26 @@ function Dropzone({ onDrop }: Props) {
   const onChange = (e: any) => {
     const file = e.target.files[0];
     if (file) {
-      getBase64(file, (url) => {
-        onDrop(url);
-      });
+      new Promise<string>((resolve, reject) => {
+        const formData = new FormData();
+        formData.append("image", file);
+        fetch(
+          `https://api.imgbb.com/1/upload?key=ee7c137fe267b7629568e66f73617e87`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        )
+          .then((response) => response.json())
+          .then(({ data }) => resolve(data.url))
+          .catch(() => reject("Upload failed"));
+      })
+        .then((url) => {
+          onDrop(url);
+        })
+        .catch(() => {
+          message.error("Upload failed");
+        });
     } else {
       message.error("Failed to upload, try again");
     }

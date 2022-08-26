@@ -74,32 +74,6 @@ function EditPostModal({ isOpen, post, onClose }: Props) {
             disabled={mutation.isLoading}
           >
             <Form.Item
-              name="image"
-              noStyle
-              getValueFromEvent={(e) => {
-                if (Array.isArray(e)) {
-                  return e;
-                }
-                return e && e.fileList;
-              }}
-            >
-              <Upload.Dragger
-                maxCount={1}
-                listType="picture"
-                disabled={false}
-                accept="image/*"
-                multiple={false}
-              >
-                <p className="ant-upload-text">
-                  Click or drag file to this area to upload
-                </p>
-                <p className="ant-upload-hint">
-                  Support for a single or bulk upload. Strictly prohibit from
-                  uploading company data or other band files
-                </p>
-              </Upload.Dragger>
-            </Form.Item>
-            <Form.Item
               label="Title"
               name="title"
               rules={[

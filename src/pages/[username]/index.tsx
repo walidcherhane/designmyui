@@ -8,7 +8,6 @@ import { trpc } from "../../utils/trpc";
 import UserAvatar from "../../components/UserAvatar";
 import {
   AiFillCamera,
-  AiFillEdit,
   AiFillSave,
   AiOutlineClose,
 } from "react-icons/ai";
@@ -16,7 +15,6 @@ import ImgCrop from "antd-img-crop";
 import { RcFile } from "antd/lib/upload";
 import Text from "../../components/Text";
 import linkifyHtml from "linkify-html";
-import { getBase64 } from "../../utils";
 
 function Profile() {
   const utils = trpc.useContext();
@@ -111,9 +109,26 @@ function Profile() {
                     showUploadList={false}
                     onChange={async ({ file }) => {
                       if (file.status === "done") {
-                        getBase64(file.originFileObj as RcFile, (base64) => {
-                          setEditedUser({ ...editedUser, banner: base64 });
-                        });
+                        new Promise<string>((resolve, reject) => {
+                          const formData = new FormData();
+                          formData.append("image", file.originFileObj as File);
+                          fetch(
+                            `https://api.imgbb.com/1/upload?key=ee7c137fe267b7629568e66f73617e87`,
+                            {
+                              method: "POST",
+                              body: formData,
+                            }
+                          )
+                            .then((response) => response.json())
+                            .then(({ data }) => resolve(data.url))
+                            .catch(() => reject("Upload failed"));
+                        })
+                          .then((url) => {
+                            setEditedUser({ ...editedUser, banner: url });
+                          })
+                          .catch(() => {
+                            message.error("Upload failed");
+                          });
                       }
                     }}
                   >
@@ -165,9 +180,26 @@ function Profile() {
                     beforeUpload={beforeUpload}
                     onChange={async ({ file }) => {
                       if (file.status === "done") {
-                        getBase64(file.originFileObj as RcFile, (base64) => {
-                          setEditedUser({ ...editedUser, avatar: base64 });
-                        });
+                        new Promise<string>((resolve, reject) => {
+                          const formData = new FormData();
+                          formData.append("image", file.originFileObj as File);
+                          fetch(
+                            `https://api.imgbb.com/1/upload?key=ee7c137fe267b7629568e66f73617e87`,
+                            {
+                              method: "POST",
+                              body: formData,
+                            }
+                          )
+                            .then((response) => response.json())
+                            .then(({ data }) => resolve(data.url))
+                            .catch(() => reject("Upload failed"));
+                        })
+                          .then((url) => {
+                            setEditedUser({ ...editedUser, avatar: url });
+                          })
+                          .catch(() => {
+                            message.error("Upload failed");
+                          });
                       }
                     }}
                   >
@@ -280,7 +312,7 @@ function Profile() {
         <div className=" col-span-full col-start-2 w-full px-8 sm:px-0 ">
           <Tabs defaultActiveKey="1">
             <Tabs.TabPane tab={`${user.name?.split(" ")[0]}'s Posts `} key="1">
-              <div className="grid grid-cols-1 gap-8 md:gap-2 xl:grid-cols-3 md:grid-cols-2  ">
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-2 xl:grid-cols-3  ">
                 {user.Posts.length ? (
                   user.Posts.sort(
                     (a, b) =>

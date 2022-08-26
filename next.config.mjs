@@ -19,6 +19,7 @@ export default defineNextConfig({
       "res.cloudinary.com",
       "lh3.googleusercontent.com",
       "ik.imagekit.io",
+      "i.ibb.co",
     ],
   },
 });
