@@ -87,7 +87,6 @@ function PostItem({ post, onClose, isOpen }: Props) {
   const handlePostDelete = async () => {
     try {
       await DeletePostMutation.mutateAsync({ id: post.id });
-      onClose();
     } catch (error) {
       console.error(error);
       if (DeletePostMutation.isError) {
@@ -160,7 +159,7 @@ function PostItem({ post, onClose, isOpen }: Props) {
             Esc
           </div>
           <div className="flex items-center justify-start p-4 py-0">
-            <UserAvatar src={post.author.image} size={40} />
+            <UserAvatar src={post.author.Profile?.avatar} size={40} />
             <div className="m-4">
               <div className="text-xs text-gray-400">Posted by:</div>
               <div className="text-lg font-bold">{post.author.name}</div>
@@ -204,10 +203,9 @@ function PostItem({ post, onClose, isOpen }: Props) {
 
                     {post.LikedPosts.length ? (
                       <>
-                        {`Liked by ${post.LikedPosts[0]?.user.name.substring(
-                          0,
-                          15
-                        )}`}
+                        {`Liked by ${post.LikedPosts[0]?.user.name
+                          .split(" ")[0]
+                          ?.substring(0, 15)}`}
                         {post.LikedPosts.length > 1
                           ? ` and 
                                   ${post.LikedPosts.length - 1} other ${
@@ -347,7 +345,7 @@ function PostItem({ post, onClose, isOpen }: Props) {
           </div>
           <div className="bg-gray-50 py-8 lg:p-8">
             <Divider>
-              <UserAvatar src={post.author.image} size={80} />
+              <UserAvatar src={post.author.Profile?.avatar} size={80} />
             </Divider>
             <div className="flex flex-col items-center justify-center">
               <div className="text-center text-lg  font-bold  ">
