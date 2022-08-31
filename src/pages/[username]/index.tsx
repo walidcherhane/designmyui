@@ -6,15 +6,12 @@ import Post from "../../components/Post";
 import { useAuth } from "../../contexts/auth";
 import { trpc } from "../../utils/trpc";
 import UserAvatar from "../../components/UserAvatar";
-import {
-  AiFillCamera,
-  AiFillSave,
-  AiOutlineClose,
-} from "react-icons/ai";
+import { AiFillCamera, AiFillSave, AiOutlineClose } from "react-icons/ai";
 import ImgCrop from "antd-img-crop";
 import { RcFile } from "antd/lib/upload";
 import Text from "../../components/Text";
 import linkifyHtml from "linkify-html";
+import { uploadAsset } from "../../utils";
 
 function Profile() {
   const utils = trpc.useContext();
@@ -46,20 +43,6 @@ function Profile() {
     },
   });
 
-  const beforeUpload = (file: RcFile | File) => {
-    const isJpgOrPng =
-      file.type === "image/jpeg" ||
-      file.type === "image/png" ||
-      file.type === "image/webp";
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error("Image must smaller than 2MB!");
-    }
-    return isJpgOrPng && isLt2M;
-  };
   const updateProfile = async () => {
     if (!editedUser) return;
     try {
@@ -101,33 +84,22 @@ function Profile() {
           <div className="bg-gray-20s0 relative h-40 w-full ">
             {canEdit ? (
               <>
-                <ImgCrop aspect={4 / 1.8} beforeCrop={beforeUpload}>
+                <ImgCrop aspect={4 / 1.8}>
                   <Upload
                     name="banner"
                     listType="picture"
-                    beforeUpload={beforeUpload}
                     showUploadList={false}
                     onChange={async ({ file }) => {
                       if (file.status === "done") {
-                        new Promise<string>((resolve, reject) => {
-                          const formData = new FormData();
-                          formData.append("image", file.originFileObj as File);
-                          fetch(
-                            `https://api.imgbb.com/1/upload?key=ee7c137fe267b7629568e66f73617e87`,
-                            {
-                              method: "POST",
-                              body: formData,
-                            }
-                          )
-                            .then((response) => response.json())
-                            .then(({ data }) => resolve(data.url))
-                            .catch(() => reject("Upload failed"));
-                        })
+                        message.loading("Uploading banner,Please wait...");
+                        uploadAsset(file.originFileObj as File)
                           .then((url) => {
-                            setEditedUser({ ...editedUser, banner: url });
+                            if (url) {
+                              setEditedUser({ ...editedUser, banner: url });
+                            }
                           })
                           .catch(() => {
-                            message.error("Upload failed");
+                            message.error("Upload Failed, Tru again");
                           });
                       }
                     }}
@@ -171,34 +143,23 @@ function Profile() {
           <div className=" relative mt-4 flex w-full flex-col items-center justify-center  px-3 text-center ">
             <div className="relative ">
               {canEdit ? (
-                <ImgCrop shape="round" quality={1} beforeCrop={beforeUpload}>
+                <ImgCrop shape="round" quality={1}>
                   <Upload
                     name="avatar"
                     listType="picture"
                     className="avatar-uploader"
                     showUploadList={false}
-                    beforeUpload={beforeUpload}
                     onChange={async ({ file }) => {
+                      message.loading("Uploading avatar,Please wait...");
                       if (file.status === "done") {
-                        new Promise<string>((resolve, reject) => {
-                          const formData = new FormData();
-                          formData.append("image", file.originFileObj as File);
-                          fetch(
-                            `https://api.imgbb.com/1/upload?key=ee7c137fe267b7629568e66f73617e87`,
-                            {
-                              method: "POST",
-                              body: formData,
-                            }
-                          )
-                            .then((response) => response.json())
-                            .then(({ data }) => resolve(data.url))
-                            .catch(() => reject("Upload failed"));
-                        })
+                        uploadAsset(file.originFileObj as File)
                           .then((url) => {
-                            setEditedUser({ ...editedUser, avatar: url });
+                            if (url) {
+                              setEditedUser({ ...editedUser, avatar: url });
+                            }
                           })
                           .catch(() => {
-                            message.error("Upload failed");
+                            message.error("Upload Failed, Tru again");
                           });
                       }
                     }}

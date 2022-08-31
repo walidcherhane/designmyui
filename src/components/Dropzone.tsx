@@ -1,37 +1,29 @@
 import { message } from "antd";
 import React from "react";
+import { uploadAsset } from "../utils";
 
 type Props = {
   onDrop: (image: string) => void;
 };
 
 function Dropzone({ onDrop }: Props) {
+  const [loading, setLoading] = React.useState(false);
   const onChange = (e: any) => {
+    if (!e.target.files[0]) return;
+    setLoading(true);
     const file = e.target.files[0];
-    if (file) {
-      new Promise<string>((resolve, reject) => {
-        const formData = new FormData();
-        formData.append("image", file);
-        fetch(
-          `https://api.imgbb.com/1/upload?key=ee7c137fe267b7629568e66f73617e87`,
-          {
-            method: "POST",
-            body: formData,
-          }
-        )
-          .then((response) => response.json())
-          .then(({ data }) => resolve(data.url))
-          .catch(() => reject("Upload failed"));
-      })
-        .then((url) => {
+    uploadAsset(file)
+      .then((url) => {
+        setLoading(false);
+        if (url) {
           onDrop(url);
-        })
-        .catch(() => {
-          message.error("Upload failed");
-        });
-    } else {
-      message.error("Failed to upload, try again");
-    }
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoading(false);
+        message.error("Upload failed, try again");
+      });
   };
   return (
     <div className="flex flex-col">
@@ -55,7 +47,7 @@ function Dropzone({ onDrop }: Props) {
         </svg>
 
         <h2 className="mt-4 text-xl font-medium tracking-wide text-gray-700">
-          Image File
+          {loading ? "Uploading..." : "Drop an image here"}
         </h2>
 
         <p className="mt-2 tracking-wide text-gray-500">
