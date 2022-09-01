@@ -111,7 +111,7 @@ const Home: NextPage = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-5 flex flex-col">
             <label htmlFor="text" className="mb-2 text-xs tracking-wide ">
-              E-Mail Address OR Username:
+              E-Mail Address:
             </label>
             <div className="relative">
               <div className="  absolute  left-0  top-0  inline-flex  h-full  w-10  items-center  justify-center text-gray-400">
