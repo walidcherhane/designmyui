@@ -47,7 +47,7 @@ function DeleteAccount({ isOpen, onClose }: Props) {
           <Text type="warning">
             <Space align="start">
               This actions is for sure NOT reversible. keep in mind that if you
-              have any posts, thery won&apos;t be deleted, you will have to
+              have any posts, they won&apos;t be deleted, you will have to
               delete them manually.
             </Space>
           </Text>

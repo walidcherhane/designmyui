@@ -24,7 +24,7 @@ function Posts() {
           <div className="mx-auto  w-11/12 md:w-1/2 xl:w-2/3">
             <Search
               size="large"
-              placeholder="Enter any kehyword to search"
+              placeholder="Enter any keywords to search"
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
