@@ -7,6 +7,29 @@ import { trpc } from "../../utils/trpc";
 import Dropzone from "../../components/Dropzone";
 import Image from "next/image";
 import { AiOutlineClose } from "react-icons/ai";
+import { GetServerSideProps } from "next";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]";
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await unstable_getServerSession(
+    ctx.req,
+    ctx.res,
+    authOptions
+  );
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {} as any,
+  };
+};
 
 function NewPost() {
   const router = useRouter();
