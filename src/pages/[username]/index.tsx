@@ -1,4 +1,4 @@
-import { Empty, message, Spin, Tabs, Tooltip, Upload } from "antd";
+import { Empty, message, Progress, Spin, Tabs, Tooltip, Upload } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -17,7 +17,6 @@ function Profile() {
   const utils = trpc.useContext();
   const router = useRouter();
   const { user: currentUser } = useAuth();
-
   const [editedUser, setEditedUser] = React.useState<{
     name?: string;
     bio?: string;
@@ -42,6 +41,10 @@ function Profile() {
       utils.invalidateQueries(["users.me"]);
     },
   });
+
+  const [editingLoader, setEditingLoader] = React.useState(
+    updateProfileMutation.isLoading
+  );
 
   const updateProfile = async () => {
     if (!editedUser) return;
@@ -74,202 +77,203 @@ function Profile() {
   return (
     <>
       <div className="grid min-h-screen sm:grid-cols-2 sm:gap-4 md:grid-cols-3  lg:grid-cols-4  ">
-        <div className="roundeds-xl relative  mx-8 flex  h-fit flex-col  items-start justify-start overflow-hidden    border-4  border-indigo-300 pb-10 sm:mx-2 ">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/header-beams-2.png"
-            className="absolute inset-0 h-full w-full "
-            alt=""
-          />
-          <div className="bg-gray-20s0 relative h-40 w-full ">
-            {canEdit ? (
-              <>
-                <ImgCrop aspect={4 / 1.8}>
-                  <Upload
-                    name="banner"
-                    listType="picture"
-                    showUploadList={false}
-                    onChange={async ({ file }) => {
-                      if (file.status === "done") {
-                        message.loading("Uploading banner,Please wait...");
-                        uploadAsset(file.originFileObj as File)
-                          .then((url) => {
-                            if (url) {
-                              setEditedUser({ ...editedUser, banner: url });
-                            }
-                          })
-                          .catch(() => {
-                            message.error("Upload Failed, Tru again");
-                          });
-                      }
-                    }}
-                  >
-                    <Image
-                      layout="fill"
-                      src={
-                        editedUser?.banner ||
-                        user.Profile?.banner ||
-                        "https://ik.imagekit.io/buw7k7rvw40/user_header_ztdMQDSVg.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1648647216517"
-                      }
-                      alt={`${user.name?.split(" ")[0]}'s header`}
-                      className="absolute inset-0 h-full w-full object-cover "
-                    />
-                  </Upload>
-                </ImgCrop>
-                <span className=" absolute bottom-2 right-2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-gray-900/50 text-xl text-white">
-                  <AiFillCamera />
-                </span>
-              </>
-            ) : (
-              <Image
-                layout="fill"
-                src={
-                  user.Profile?.banner ||
-                  "https://ik.imagekit.io/buw7k7rvw40/user_header_ztdMQDSVg.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1648647216517"
-                }
-                alt={`${user.name?.split(" ")[0]}'s header`}
-                className="absolute inset-0 h-full w-full object-cover "
-              />
-            )}
-
-            <div className="absolute top-full left-1/2 -ml-24 -mt-px h-8 -translate-x-1/2 overflow-hidden">
-              <div className="flex h-[2px] w-96 -scale-x-100">
-                <div className="w-full flex-none blur-sm [background-image:linear-gradient(90deg,rgba(56,189,248,0)_0%,#0EA5E9_32.29%,rgba(236,72,153,0.3)_67.19%,rgba(236,72,153,0)_100%)]" />
-                <div className="-ml-[100%] w-full flex-none blur-[1px] [background-image:linear-gradient(90deg,rgba(56,189,248,0)_0%,#0EA5E9_32.29%,rgba(236,72,153,0.3)_67.19%,rgba(236,72,153,0)_100%)]" />
-              </div>
-            </div>
-          </div>
-
-          <div className=" relative mt-4 flex w-full flex-col items-center justify-center  px-3 text-center ">
-            <div className="relative ">
+        <Spin spinning={editingLoader}>
+          <div className="roundeds-xl relative  mx-8 flex  h-fit flex-col  items-start justify-start overflow-hidden    border-4  border-indigo-300 pb-10 sm:mx-2 ">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/header-beams-2.png"
+              className="absolute inset-0 h-full w-full "
+              alt=""
+            />
+            <div className="relative h-40 w-full bg-gray-200 ">
               {canEdit ? (
-                <ImgCrop shape="round" quality={1}>
-                  <Upload
-                    name="avatar"
-                    listType="picture"
-                    className="avatar-uploader"
-                    showUploadList={false}
-                    onChange={async ({ file }) => {
-                      message.loading("Uploading avatar,Please wait...");
-                      if (file.status === "done") {
-                        uploadAsset(file.originFileObj as File)
-                          .then((url) => {
-                            if (url) {
-                              setEditedUser({ ...editedUser, avatar: url });
-                            }
-                          })
-                          .catch(() => {
-                            message.error("Upload Failed, Tru again");
+                <>
+                  <ImgCrop aspect={4 / 1.8}>
+                    <Upload
+                      name="image"
+                      listType="picture"
+                      showUploadList={false}
+                      action={
+                        "https://api.imgbb.com/1/upload?key=ee7c137fe267b7629568e66f73617e87"
+                      }
+                      onChange={async (data) => {
+                        setEditingLoader(true);
+                        if (data.file.status === "done") {
+                          setEditingLoader(false);
+                          setEditedUser({
+                            ...editedUser,
+                            banner: data.file.response.data.image.url,
                           });
-                      }
-                    }}
-                  >
-                    <UserAvatar
-                      src={
-                        editedUser?.avatar ||
-                        user.Profile?.avatar ||
-                        "https://ik.imagekit.io/buw7k7rvw40/avatar_p0Wyeh2b_.svg?ik-sdk-version=javascript-1.4.3&updatedAt=1660157803820"
-                      }
-                      size={112}
-                      alt={user.name}
-                      classNames="w-full cursor-pointer"
-                    />
-                    <span className="  absolute right-0 bottom-0 z-10 flex items-center  justify-center rounded-full border-4 border-gray-100 bg-white bg-clip-border p-2 text-xl text-gray-800">
-                      <AiFillCamera />
-                    </span>
-                  </Upload>
-                </ImgCrop>
+                        }
+                      }}
+                    >
+                      <Image
+                        layout="fill"
+                        src={
+                          editedUser?.banner ||
+                          user.Profile?.banner ||
+                          "https://ik.imagekit.io/buw7k7rvw40/user_header_ztdMQDSVg.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1648647216517"
+                        }
+                        alt={`${user.name?.split(" ")[0]}'s header`}
+                        className="absolute inset-0 h-full w-full object-cover "
+                      />
+                    </Upload>
+                  </ImgCrop>
+                  <span className=" absolute bottom-2 right-2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-gray-900/50 text-xl text-white">
+                    <AiFillCamera />
+                  </span>
+                </>
               ) : (
-                <UserAvatar
+                <Image
+                  layout="fill"
                   src={
-                    user.Profile?.avatar ||
-                    "https://ik.imagekit.io/buw7k7rvw40/avatar_p0Wyeh2b_.svg?ik-sdk-version=javascript-1.4.3&updatedAt=1660157803820"
+                    user.Profile?.banner ||
+                    "https://ik.imagekit.io/buw7k7rvw40/user_header_ztdMQDSVg.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1648647216517"
                   }
-                  size={112}
-                  alt={user.name}
-                  classNames="w-full"
+                  alt={`${user.name?.split(" ")[0]}'s header`}
+                  className="absolute inset-0 h-full w-full object-cover "
                 />
               )}
-            </div>
-            {canEdit && Boolean(editedUser) && (
-              <div className="absolute right-6 top-0 m-0 flex flex-col">
-                <Tooltip
-                  placement="right"
-                  title={
-                    updateProfileMutation.isLoading
-                      ? "Saving..."
-                      : "Save changes"
-                  }
-                >
-                  <button
-                    disabled={updateProfileMutation.isLoading}
-                    onClick={updateProfile}
-                    className="rounded-full bg-gray-200 p-3 text-xl text-gray-400"
-                  >
-                    <AiFillSave />
-                  </button>
-                </Tooltip>
-                <Tooltip placement="right" title={"Cancel all changes"}>
-                  <button
-                    disabled={updateProfileMutation.isLoading}
-                    onClick={() => {
-                      setEditedUser(undefined);
-                    }}
-                    className="mt-2 rounded-full bg-gray-200 p-3 text-xl text-gray-400"
-                  >
-                    <AiOutlineClose />
-                  </button>
-                </Tooltip>
+
+              <div className="absolute top-full left-1/2 -ml-24 -mt-px h-8 -translate-x-1/2 overflow-hidden">
+                <div className="flex h-[2px] w-96 -scale-x-100">
+                  <div className="w-full flex-none blur-sm [background-image:linear-gradient(90deg,rgba(56,189,248,0)_0%,#0EA5E9_32.29%,rgba(236,72,153,0.3)_67.19%,rgba(236,72,153,0)_100%)]" />
+                  <div className="-ml-[100%] w-full flex-none blur-[1px] [background-image:linear-gradient(90deg,rgba(56,189,248,0)_0%,#0EA5E9_32.29%,rgba(236,72,153,0.3)_67.19%,rgba(236,72,153,0)_100%)]" />
+                </div>
               </div>
-            )}
-            <div className="mt-3 w-full font-default">
-              <div className="flex flex-col text-xl  font-bold capitalize text-gray-800 ">
+            </div>
+
+            <div className=" relative mt-4 flex w-full flex-col items-center justify-center  px-3 text-center ">
+              <div className="relative">
+                {canEdit ? (
+                  <>
+                    <ImgCrop shape="round" quality={1}>
+                      <Upload
+                        name="image"
+                        listType="picture"
+                        className="avatar-uploader"
+                        showUploadList={false}
+                        action={
+                          "https://api.imgbb.com/1/upload?key=ee7c137fe267b7629568e66f73617e87"
+                        }
+                        onChange={async (data) => {
+                          setEditingLoader(true);
+                          if (data.file.status === "done") {
+                            setEditingLoader(false);
+                            setEditedUser({
+                              ...editedUser,
+                              avatar: data.file.response.data.image.url,
+                            });
+                          }
+                        }}
+                      >
+                        <UserAvatar
+                          src={
+                            editedUser?.avatar ||
+                            user.Profile?.avatar ||
+                            "https://ik.imagekit.io/buw7k7rvw40/avatar_p0Wyeh2b_.svg?ik-sdk-version=javascript-1.4.3&updatedAt=1660157803820"
+                          }
+                          size={112}
+                          alt={user.name}
+                          classNames="w-full cursor-pointer"
+                        />
+                      </Upload>
+                    </ImgCrop>
+                    <span className="absolute right-0 bottom-0 z-50 flex items-center  justify-center rounded-full border-4 border-gray-100 bg-white bg-clip-border p-2 text-xl text-gray-800">
+                      <AiFillCamera />
+                    </span>
+                  </>
+                ) : (
+                  <UserAvatar
+                    src={
+                      user.Profile?.avatar ||
+                      "https://ik.imagekit.io/buw7k7rvw40/avatar_p0Wyeh2b_.svg?ik-sdk-version=javascript-1.4.3&updatedAt=1660157803820"
+                    }
+                    size={112}
+                    alt={user.name}
+                    classNames="w-full"
+                  />
+                )}
+              </div>
+              {canEdit && Boolean(editedUser) && (
+                <div className="absolute right-6 top-0 m-0 flex flex-col">
+                  <Tooltip
+                    placement="right"
+                    title={
+                      updateProfileMutation.isLoading
+                        ? "Saving..."
+                        : "Save changes"
+                    }
+                  >
+                    <button
+                      disabled={updateProfileMutation.isLoading}
+                      onClick={updateProfile}
+                      className="rounded-full bg-gray-200 p-3 text-xl text-gray-400"
+                    >
+                      <AiFillSave />
+                    </button>
+                  </Tooltip>
+                  <Tooltip placement="right" title={"Cancel all changes"}>
+                    <button
+                      disabled={updateProfileMutation.isLoading}
+                      onClick={() => {
+                        setEditedUser(undefined);
+                      }}
+                      className="mt-2 rounded-full bg-gray-200 p-3 text-xl text-gray-400"
+                    >
+                      <AiOutlineClose />
+                    </button>
+                  </Tooltip>
+                </div>
+              )}
+              <div className="mt-3 w-full font-default">
+                <div className="flex flex-col text-xl  font-bold capitalize text-gray-800 ">
+                  <Text
+                    onSave={(name) => {
+                      setEditedUser({
+                        ...editedUser,
+                        name,
+                      });
+                    }}
+                    type="text"
+                    readOnly={!canEdit}
+                  >
+                    {editedUser?.name || user.name}
+                  </Text>
+                  <span className="inline-flex items-center justify-center text-sm text-gray-400">
+                    @{user.username}
+                  </span>
+                </div>
+
                 <Text
-                  onSave={(name) => {
+                  type="html"
+                  placeholder="Tell us about yourself"
+                  readOnly={!canEdit}
+                  onSave={(bio) => {
                     setEditedUser({
                       ...editedUser,
-                      name,
+                      bio,
                     });
                   }}
-                  type="text"
-                  readOnly={!canEdit}
+                  className="mt-4 text-left text-sm font-bold text-gray-600"
                 >
-                  {editedUser?.name || user.name}
+                  {linkifyHtml(editedUser?.bio || user.Profile?.bio || "", {
+                    className: "text-blue-500",
+                    ignoreTags: ["br"],
+                    rel: "noopener",
+                    target: "__blank",
+                    validate: {
+                      url: (value: any) =>
+                        /^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(
+                          value
+                        ),
+                    },
+                  })}
                 </Text>
-                <span className="inline-flex items-center justify-center text-sm text-gray-400">
-                  @{user.username}
-                </span>
               </div>
-
-              <Text
-                type="html"
-                placeholder="Tell us about yourself"
-                readOnly={!canEdit}
-                onSave={(bio) => {
-                  setEditedUser({
-                    ...editedUser,
-                    bio,
-                  });
-                }}
-                className="mt-4 text-left text-sm font-bold text-gray-600"
-              >
-                {linkifyHtml(editedUser?.bio || user.Profile?.bio || "", {
-                  className: "text-blue-500",
-                  ignoreTags: ["br"],
-                  rel: "noopener",
-                  target: "__blank",
-                  validate: {
-                    url: (value: any) =>
-                      /^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(
-                        value
-                      ),
-                  },
-                })}
-              </Text>
             </div>
           </div>
-        </div>
-
+        </Spin>
         <div className=" col-span-full col-start-2 w-full px-8 sm:px-0 ">
           <Tabs defaultActiveKey="1">
             <Tabs.TabPane tab={`${user.name?.split(" ")[0]}'s Posts `} key="1">
