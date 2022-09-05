@@ -1,4 +1,4 @@
-import { Empty, message, Progress, Spin, Tabs, Tooltip, Upload } from "antd";
+import { Empty, message, Spin, Tabs, Tooltip, Upload } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -8,10 +8,8 @@ import { trpc } from "../../utils/trpc";
 import UserAvatar from "../../components/UserAvatar";
 import { AiFillCamera, AiFillSave, AiOutlineClose } from "react-icons/ai";
 import ImgCrop from "antd-img-crop";
-import { RcFile } from "antd/lib/upload";
 import Text from "../../components/Text";
 import linkifyHtml from "linkify-html";
-import { uploadAsset } from "../../utils";
 
 function Profile() {
   const utils = trpc.useContext();
