@@ -10,6 +10,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
+const { Option } = Select;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await unstable_getServerSession(
@@ -32,9 +33,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 function NewPost() {
+  const [tagFocused, setTagFocused] = useState(false);
   const router = useRouter();
   const mutation = trpc.useMutation("posts.newPost");
   const [imageUrl, setImageUrl] = useState<string>();
+  const tagsQuery = trpc.useQuery(["posts.getAllTags"], {
+    enabled: tagFocused,
+  })
+  const suggestedTags = [...new Set(tagsQuery.data?.map((group)=> group.tags?.split(',')).filter((tag)=> tag !== null).flat(2))]
+
+
+  console.log({suggestedTags})
   const onFinish = async (values: any) => {
     try {
       await mutation.mutateAsync({
@@ -159,11 +168,17 @@ function NewPost() {
                   >
                     <Select
                       maxTagTextLength={10}
-                      open={false}
                       allowClear
                       mode="tags"
                       placeholder="Enter a tag and hit enter"
-                    />
+                      notFoundContent={tagsQuery.isLoading ? <Spin size="small" className="mx-auto w-full" /> : null}
+                      tokenSeparators={[',',' ']}
+                      onFocus={() => setTagFocused(true)}
+                    >
+                       {suggestedTags.map((t, i)=> (
+                          <Option key={`${t}--${i}`} value={t}>{t}</Option>
+                       ) )}
+                    </Select>
                   </Form.Item>
                   <Form.Item name="isPrivate" valuePropName="checked">
                     <Checkbox>Keep this private</Checkbox>

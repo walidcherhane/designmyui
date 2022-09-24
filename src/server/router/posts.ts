@@ -131,6 +131,16 @@ export const posts = createRouter()
       });
     },
   })
+  .query("getAllTags", { 
+    resolve: async ({ ctx })=>{
+      const tags = await ctx.prisma.post.findMany({
+        select:{
+          tags: true
+        }
+      })
+      return tags 
+    }
+  })
   .mutation("newPost", {
     input: NewPostSchema,
     resolve: async ({ input, ctx }) => {
