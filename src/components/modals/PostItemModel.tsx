@@ -37,7 +37,6 @@ type Props = {
 };
 
 function PostItem({ post, onClose, isOpen }: Props) {
-  const router = useRouter();
   const utils = trpc.useContext();
   const { user } = useAuth();
 
@@ -170,7 +169,7 @@ function PostItem({ post, onClose, isOpen }: Props) {
               <div
                 onClick={() => setIsImageOpenModel(true)}
                 style={{ backgroundColor: postImageData.lightMuted }}
-                className={`relative flex 	h-full cursor-pointer  items-start justify-center lg:col-span-2`}
+                className={`relative flex rounded-xl md:rounded-none overflow-hidden	h-full cursor-pointer  items-start justify-center lg:col-span-2`}
               >
                 <Image
                   quality={100}
@@ -183,7 +182,7 @@ function PostItem({ post, onClose, isOpen }: Props) {
                 />
               </div>
             </div>
-            <div className="bg-gray-50">
+            <div className="md:bg-gray-50 ">
               <div className="p-5">
                 <div className="flex flex-grow justify-between gap-2">
                   <div className="flex items-center gap-1 text-xs">
@@ -264,7 +263,7 @@ function PostItem({ post, onClose, isOpen }: Props) {
                 </div>
 
                 <div className="mt-4 flex flex-wrap items-center justify-start gap-2 ">
-                  {post.softwares?.split(",").map((software, i) => (
+                  {post.softwares?.split(",").map((software) => (
                     <Link href={`/?q=${software}`} key={software}>
                       <a className="inline-flex flex-shrink-0 items-center gap-2 rounded-xl border bg-white p-2 px-3 text-indigo-400  transition-all  hover:border-indigo-400">
                         {software == "Figma" && <SiFigma />}
@@ -343,32 +342,36 @@ function PostItem({ post, onClose, isOpen }: Props) {
               </div>
             </div>
           </div>
-          <div className="bg-gray-50 py-8 lg:p-8">
+          <div className="md:bg-gray-50 py-8 lg:p-8">
             <Divider>
               <UserAvatar src={post.author.Profile?.avatar} size={80} />
             </Divider>
-            <div className="flex flex-col items-center justify-center">
-              <div className="text-center text-lg  font-bold  ">
-                {post.author.name}
+              <div className="flex flex-col items-center justify-center">
+                <div className="text-center text-lg  font-bold  ">
+                  {post.author.name}
+                </div>
+                <Link href={`/${post.author.username}`}>
+                    <a className=" text-center font-light  text-gray-400  ">
+                      @{post.author.username}
+                    </a>
+                </Link>
               </div>
-              <div className=" text-center font-light  text-gray-400  ">
-                @{post.author.username}
-              </div>
-              <Link href={`/${post.author.username}`}>
-                <a className=" mt-4 rounded-md bg-indigo-600 p-2 px-3 font-light text-white transition-all hover:bg-indigo-500  hover:text-white ">
-                  View Profile
-                </a>
-              </Link>
-            </div>
             {post.author.Posts.length && (
-              <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3 ">
-                <div className="col-span-full   p-3 px-8">
+              <div className="mt-4 grid gap-3 sm:grid-cols-2  md:grid-cols-3 ">
+                <div className="col-span-full">
                   More by{" "}
                   <span className="font-semibold">{post.author.name}</span>
                 </div>
-                {post.author.Posts.map(({ id }) => (
+                {post.author.Posts.slice(0, 6).map(({ id }) => (
                   <Post key={id} id={id} />
                 ))}
+                <div className="flex col-span-full w-full mt-10 items-center justify-center">
+                  <Link href={`/${post.author.username}`}>
+                    <a className=" px-10 py-3 rounded-lg bg-slate-600 text-white uppercase font-semibold hover:text-slate-800 hover:bg-gray-100 transition-all border border-slate-600 ">
+                      View All
+                    </a>
+                  </Link>
+                </div>
               </div>
             )}
           </div>

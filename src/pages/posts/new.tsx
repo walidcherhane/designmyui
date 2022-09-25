@@ -41,9 +41,6 @@ function NewPost() {
     enabled: tagFocused,
   })
   const suggestedTags = [...new Set(tagsQuery.data?.map((group)=> group.tags?.split(',')).filter((tag)=> tag !== null).flat(2))]
-
-
-  console.log({suggestedTags})
   const onFinish = async (values: any) => {
     try {
       await mutation.mutateAsync({
