@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { trpc } from "../utils/trpc";
 import Link from "next/link";
 import Image from "next/image";
@@ -12,7 +12,7 @@ import {
 import AuthModel from "./modals/AuthModel";
 import { useAuth } from "../contexts/auth";
 import moment from "moment";
-import { Avatar, message } from "antd";
+import { message } from "antd";
 import PostItemModel from "./modals/PostItemModel";
 import ContentLoader from "react-content-loader";
 import { motion } from "framer-motion";
@@ -21,8 +21,36 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 function Post({ id }: { id: string }) {
   const { user } = useAuth();
   const utils = trpc.useContext();
+  const mounted = useRef(null)
+  const [visible, setVisible] = useState(false)
 
-  const { data: post, isLoading } = trpc.useQuery(["posts.post", { id }]);
+
+  useEffect(() => {
+    const cb = (
+      enteries: IntersectionObserverEntry[],
+    ) => {
+      const first = enteries[0]
+      if (first?.isIntersecting) {
+        setVisible(true)
+      }
+    }
+    const obs = new IntersectionObserver(cb, {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.1,
+    })
+    setTimeout(() => {
+    if (mounted.current) {
+        obs.observe(mounted.current)
+      }
+    }, 500)
+    return () => obs.disconnect()
+  }, [])
+
+
+  const { data: post, isLoading } = trpc.useQuery(["posts.post", { id }], {
+    enabled: visible,
+  });
   const likePostMutation = trpc.useMutation("posts.likePost", {
     onSuccess: () => {
       utils.invalidateQueries(["posts.likedPosts"]);
@@ -47,26 +75,25 @@ function Post({ id }: { id: string }) {
   const [isAuthModelOpen, setIsAuthModelOpen] = React.useState(false);
   const [isPostModelOpen, setIsPostModelOpen] = React.useState(false);
 
-  if (isLoading) {
+  if (isLoading || !post) {
     return (
-      <ContentLoader
-        className="mx-auto mt-4"
-        viewBox="0 0 300 270"
-        height={270}
-        width={300}
+      <div
+        ref={mounted}
       >
-        <rect x="0" y="0" rx="4" ry="4" width="300" height="200" />
-        <rect x="60" y="220" rx="1" ry="1" width="240" height="10" />
-        <rect x="60" y="240" rx="1" ry="1" width="180" height="10" />
-        <rect x="0" y="210" rx="4" ry="4" width="50" height="50" />
-      </ContentLoader>
+        <ContentLoader
+          className="mx-auto mt-4"
+          viewBox="0 0 300 270"
+          height={270}
+          width={300}
+        >
+          <rect x="0" y="0" rx="4" ry="4" width="300" height="200" />
+          <rect x="60" y="220" rx="1" ry="1" width="240" height="10" />
+          <rect x="60" y="240" rx="1" ry="1" width="180" height="10" />
+          <rect x="0" y="210" rx="4" ry="4" width="50" height="50" />
+        </ContentLoader>
+      </div>
     );
   }
-
-  if (!post) {
-    return null;
-  }
-
   const handlePostLike = async () => {
     if (!user) {
       setIsAuthModelOpen(true);
